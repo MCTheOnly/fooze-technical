@@ -1,0 +1,92 @@
+*,
+*::before,
+*::after {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	scroll-behavior: smooth;
+}
+
+.single-book {
+	display: flex;
+	flex-direction: column;
+}
+
+.single-book a {
+	text-decoration: none;
+	color: #0000ff;
+}
+
+.single-book a:hover {
+	color: #ff5500;
+}
+
+.single-book__title p {
+	text-align: center;
+	font-size: 20px;
+}
+
+.single-book__title h1 {
+	text-align: center;
+	margin-bottom: 0;
+}
+
+.single-book__categories {
+	display: flex;
+	justify-content: center;
+}
+
+.single-book__categories nav {
+	display: flex;
+	column-gap: 10px;
+}
+
+.single-book__image {
+	margin: 40px 0 60px 0;
+}
+
+.single-book__image figure {
+	display: flex;
+	justify-content: center;
+}
+
+.archive-genres a {
+	text-decoration: none;
+	color: #0000ff;
+}
+
+.archive-genres a:hover {
+	text-decoration: none;
+	color: #ff5500;
+}
+
+.archive-genres__pagination {
+	display: flex;
+	justify-content: center;
+}
+
+.archive-genres__container {
+	width: max-content;
+	position: relative;
+}
+
+.archive-genres__list ul {
+	list-style-type: none;
+}
+
+.archive-genres__pagination .prev.page-numbers {
+	position: absolute;
+	left: 0;
+	width: max-content;
+	margin-right: 10px;
+	transform: translateX(calc(-100% - 10px));
+}
+
+.archive-genres__pagination .next.page-numbers {
+	margin-left: 10px;
+	position: absolute;
+	width: max-content;
+}

@@ -1,0 +1,11 @@
+/*
+Theme Name:     Twentytwenty-child
+Theme URI:      
+Description:    Twentytwenty child theme.
+Author:         Martin Chorzewski
+Author URI:     
+Template:       twentytwenty
+Version:        0.1.0
+*/
+
+@import "./assets/css/index.css";
