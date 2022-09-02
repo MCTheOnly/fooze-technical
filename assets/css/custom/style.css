@@ -59,7 +59,6 @@ body {
 }
 
 .archive-genres a:hover {
-	text-decoration: none;
 	color: #ff5500;
 }
 
@@ -89,4 +88,17 @@ body {
 	margin-left: 10px;
 	position: absolute;
 	width: max-content;
+}
+
+.recent-post ul {
+	list-style-type: none;
+}
+
+.recent-post a {
+	text-decoration: none;
+	color: #0000ff;
+}
+
+.recent-post a:hover {
+	color: #ff5500;
 }

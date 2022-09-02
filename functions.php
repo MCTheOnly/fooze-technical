@@ -17,6 +17,7 @@ add_action( "init", "books_post_type" );
 add_action( "init", "books_post_taxonomies" );
 add_filter( 'post_type_link', 'books_link_rewrite', 1, 3 );
 add_action('init', 'pagination_rewrite');
+add_shortcode( 'custom_recent_book_shortcode', 'recent_book_shortcode' );
 
 /**
 * Enqueue scripts and styles
@@ -146,6 +147,8 @@ function pagination_rewrite() {
 		'hide_empty' => false,
 	]);
 
+	global $post;
+
     if ( is_object( $post ) ){
 		foreach( $terms as $term ) {
 			add_rewrite_rule("library/$term/page/?([0-9]{1,})/?$", "index.php?category_name=library/$term&paged=$matches[1]", 'top');
@@ -154,11 +157,41 @@ function pagination_rewrite() {
 }
 
 /**
-* Flush rewrite rules
-* For development environment
+* Shortcodes
 */
 
-//DEV ENV ->
+
+function recent_book_shortcode() {
+
+	ob_start(); ?>
+
+	<h2>Recent Post</h2>
+
+	<div class="recent-post">
+		<ul>
+
+			<?php
+		    $recent_posts = wp_get_recent_posts( array( 'post_type'=>'books' ) );
+			$recent_post  = $recent_posts[0];
+			$id           = $recent_post["ID"];
+			$title        = $recent_post["post_title"]; 
+			?>
+
+			<li><a href="<?php echo get_permalink($id) ?>"><?php echo esc_html($title) ?></a></li>
+		</ul> 
+	</div>
+	<?php return ob_get_clean();
+}
+
+/**
+* DEV ENV
+* development environment tests & actions
+*/
+
+// /DEV ENV/ ->
+
+// echo do_shortcode( "[custom_recent_book_shortcode]" );
 flush_rewrite_rules(true);
+
 //<- DEV ENV
 
