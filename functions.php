@@ -159,13 +159,12 @@ function pagination_rewrite() {
 
 /**
 * Shortcodes
+* Display recent post
 */
-
 
 function recent_book_shortcode() {
 
 	ob_start(); ?>
-
 
 <div class="recent-post">
 		<h2><?php _e( "Recent Post" ); ?></h2>
@@ -186,22 +185,28 @@ function recent_book_shortcode() {
 	<?php return ob_get_clean();
 }
 
+/**
+* Shortcodes
+* Display 5 books from given post ID
+*/
+
 function genres_books_shortcode( $atts ) {
 
 	ob_start(); 
 
 	$attributes     = shortcode_atts( array( "id" => 5 ), $atts );
-	$id = get_term( $attributes["id"] )->term_id;
+	$id             = get_term( $attributes["id"] )->term_id;
 	$term_name      = term_exists( $id ) ? get_term( $id )->name : '';
 	$post_type      = 'books';
 	$taxonomy       = 'genres';
 	$posts_per_page = 5;
 	
-	if ( $term_name != '' ) :
+	if ( $term_name !== '' ) :
 
 		$args = array(
 			'post_type'      => $post_type,
 			'posts_per_page' => $posts_per_page,
+			'orderby'        => 'title',
 			'order'          => 'ASC',
 			'tax_query'      => array( array(
 				'taxonomy' => $taxonomy,
@@ -213,22 +218,25 @@ function genres_books_shortcode( $atts ) {
 		$query = new WP_Query( $args ); ?>
 
 	
-		<h2><?php echo __( "Books in category: $term_name" ); ?></h2>
+		<h2><?php _e( "Books in category: $term_name" ); ?></h2>
 		
 		<?php
 		if( $query->have_posts() ) { ?>
 			<div class="archive-genres__list">
-					<ul> 
-						<?php while( $query->have_posts() ) : $query->the_post(); ?>
-							<li><a href="<?php the_permalink(); ?>"><?php the_title() ?></a></li> 
-						<?php endwhile; ?>
-					</ul> 
-				</div>
+				<ul> 
+					<?php while( $query->have_posts() ) : $query->the_post(); ?>
+						<li><a href="<?php echo esc_url( the_permalink() ); ?>"><?php _e( the_title() ) ?></a></li> 
+					<?php endwhile; ?>
+				</ul> 
+			</div>
 			<?php 
 			} else {
 			echo "No Posts found";
 		} 
-		 
+
+	wp_reset_postdata();
+	wp_reset_query();
+
 	endif;
 
 	return ob_get_clean();
@@ -242,7 +250,7 @@ function genres_books_shortcode( $atts ) {
 
 // /DEV ENV/ ->
 
-// echo do_shortcode( "[custom_genres_books_shortcode id='5']" );
+// echo do_shortcode( "[custom_genres_books_shortcode id=5]" );
 flush_rewrite_rules(true);
 
 //<- DEV ENV

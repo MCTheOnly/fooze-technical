@@ -45,7 +45,10 @@ get_header();
 				<?php endwhile; ?>
 			</ul> 
 		</div>
-		<?php endif; ?>
+		<?php 
+		wp_reset_postdata();
+		wp_reset_query();
+		endif; ?>
 
 		<div class="archive-genres__pagination">
 			<div class="archive-genres__container">
