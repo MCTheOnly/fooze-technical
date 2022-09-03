@@ -218,22 +218,26 @@ function genres_books_shortcode( $atts ) {
 		$query = new WP_Query( $args ); ?>
 
 	
-		<h2><?php _e( "Books in category: $term_name" ); ?></h2>
-		
-		<?php
-		if( $query->have_posts() ) { ?>
-			<div class="archive-genres__list">
+
+		<div class="genre-books__list">
+			<h2><?php _e( "Books in category: $term_name" ); ?></h2>
+
+			<?php
+			if( $query->have_posts() ) { ?>
+
 				<ul> 
 					<?php while( $query->have_posts() ) : $query->the_post(); ?>
 						<li><a href="<?php echo esc_url( the_permalink() ); ?>"><?php _e( the_title() ) ?></a></li> 
 					<?php endwhile; ?>
 				</ul> 
-			</div>
-			<?php 
-			} else {
-			echo "No Posts found";
-		} 
+				<?php 
 
+			} else { ?>
+				<p> <?php _e( "No Posts found" ); ?></p> <?php 
+			} ?>
+
+		</div>
+	<?php
 	wp_reset_postdata();
 	wp_reset_query();
 
