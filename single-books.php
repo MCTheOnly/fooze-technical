@@ -40,6 +40,17 @@ get_header();
 		</div>
 		<?php endwhile; endif; ?>
 	</section>
+
+	<?php
+	$terms = get_terms([
+		'taxonomy' => 'genres',
+		'hide_empty' => false,
+	]);
+	
+	echo '<pre>';
+	print_r( $terms );
+	echo '</pre>';
+	?>
 </main><!-- #site-content -->
 
 <?php get_footer(); ?>

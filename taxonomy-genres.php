@@ -32,7 +32,7 @@ get_header();
 				'terms'    => $term,
 				),
 			),
-		 );
+		);
 
 		$query = new WP_Query( $args );
 

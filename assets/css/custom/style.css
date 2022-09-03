@@ -90,8 +90,20 @@ body {
 	width: max-content;
 }
 
+.recent-post {
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+}
+
 .recent-post ul {
 	list-style-type: none;
+	margin: 0;
+}
+
+.recent-post li {
+	margin: 0;
+	text-align: center;
 }
 
 .recent-post a {
