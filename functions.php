@@ -19,6 +19,8 @@ add_filter( 'post_type_link', 'books_link_rewrite', 1, 3 );
 add_action('init', 'pagination_rewrite');
 add_shortcode( 'custom_recent_book_shortcode', 'recent_book_shortcode' );
 add_shortcode( 'custom_genres_books_shortcode', 'genres_books_shortcode' );
+add_action( 'wp_ajax_ajax_object_request', 'ajax_request' );
+
 
 /**
 * Enqueue scripts and styles
@@ -37,8 +39,9 @@ function twentytwenty_parent_theme_enqueue_styles() {
 }
 
 function jquery_footer_scripts() {
+
     wp_enqueue_script(
-        "jquery-script",
+        "jquery-ajax-script",
         get_stylesheet_directory_uri() . "/assets/js/scripts.js",
         array( "jquery" ),
 		"1.0.0",
@@ -77,11 +80,12 @@ function books_post_type() {
 	$supports = array(
 		"title",
 		"editor",
-		"thumbnail"
+		"thumbnail",
+		"excerpt"
 	);
 
 	$args = array(
-		"labels"       => labels_template("Books", "Book", "Books Post Type"),
+		"labels"             => labels_template("Books", "Book", "Books Post Type"),
 		"hierarchical"       => false,
 		"public"             => true,
 		"has_archive"        => true,
@@ -247,10 +251,68 @@ function genres_books_shortcode( $atts ) {
 }
 
 /**
+* AJAX requests
+* create JSON data to send via AJAX
+*/
+
+function ajax_data_json() {
+	
+	$post_type      = 'books';
+	$posts_per_page = 20;
+	$book_list      = array();
+
+	$args = array(
+		'post_type'      => $post_type,
+		'posts_per_page' => $posts_per_page,
+	);
+
+	$query = new WP_Query( $args );
+
+	if( $query->have_posts() ) : while( $query->have_posts() ) : $query->the_post();
+
+		$id       = get_the_ID();
+		$taxonomy = 'genres';
+		$name     = get_the_title();
+		$date     = get_the_date( 'j F Y' );
+		$term     = get_the_terms( $id, $taxonomy )[0]->name;
+		$excerpt  = get_the_excerpt();
+
+		array_push( $book_list, array (
+			"name"    => $name,
+			"date"    => $date,
+			"genre"   => $term,
+			"excerpt" => $excerpt
+		) );
+
+	endwhile;
+	endif;
+
+	return json_encode( $book_list );
+}
+
+/**
+* AJAX requests
+* send the data
+*/
+
+function ajax_request() {
+
+	if ( isset( $_REQUEST ) ) :
+
+		$data = ajax_data_json();
+
+		echo $data;
+
+	endif;
+
+	die();
+}
+
+
+/**
 * DEV ENV
 * development environment tests & actions
 */
-
 
 // /DEV ENV/ ->
 
@@ -258,4 +320,5 @@ function genres_books_shortcode( $atts ) {
 flush_rewrite_rules(true);
 
 //<- DEV ENV
+
 

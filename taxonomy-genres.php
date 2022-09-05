@@ -1,6 +1,6 @@
 <?php
 /**
- * The template for displaying single book pages.
+ * The template for displaying books taxonomy genres archive.
  *
  * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
  *
